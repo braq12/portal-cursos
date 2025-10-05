@@ -1,0 +1,38 @@
+server:
+  port: 8085
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 512MB
+      max-request-size: 512MB
+  datasource:
+    url: jdbc:mysql://skillup-database.c34y04g262ik.us-east-2.rds.amazonaws.com:3306/portal_cursos?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: admin
+    password: admin.123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secret: DEV_CAMBIA_ESTA_LLAVE_LARGA_12345678901234567890
+  expirationMinutes: 120
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+storage:
+  provider: s3
+
+aws:
+  region: us-east-2
+  s3:
+    bucket: portal-cursos-bucket

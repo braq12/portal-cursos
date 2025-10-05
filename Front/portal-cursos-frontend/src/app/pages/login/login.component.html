@@ -1,0 +1,42 @@
+<p-toast></p-toast>
+
+
+<div class="min-h-screen p-3 surface-ground flex align-items-center justify-content-center">
+  <p-card class="w-full sm:w-8 md:w-6 lg:w-4">
+    <ng-template pTemplate="header">
+      <div class="flex align-items-center">
+        <i class="pi pi-book mr-2"></i>
+        <span class="font-semibold">Portal Cursos</span>
+      </div>
+    </ng-template>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="form-grid">
+      <div class="field">
+        <label class="block mb-2">Correo</label>
+        <input pInputText type="email" formControlName="correo" placeholder="correo@dominio.com" class="w-full" />
+        <small class="p-error" *ngIf="form.controls.correo.touched && form.controls.correo.invalid">
+          {{ form.controls.correo.hasError('required') ? 'Obligatorio' : 'Correo inválido' }}
+        </small>
+      </div>
+
+      <div class="field">
+        <label class="block mb-2">Contraseña</label>
+            <p-password formControlName="clave" [feedback]="false" [toggleMask]="true" styleClass="w-full"
+                    inputStyleClass="w-full" placeholder="•••••••"></p-password>        
+        <small class="p-error" *ngIf="form.controls.clave.touched && form.controls.clave.invalid">
+          {{ form.controls.clave.hasError('required') ? 'Obligatoria' : 'Mínimo 6 caracteres' }}
+        </small>
+      </div>
+
+      <button pButton type="submit" label="Ingresar" class="w-full mt-2" [disabled]="loading() || form.invalid"></button>
+
+      <div class="flex align-items-center justify-content-center mt-3" *ngIf="loading()">
+        <p-progressSpinner styleClass="w-2rem h-2rem"></p-progressSpinner>
+      </div>
+    </form>
+
+    <ng-template pTemplate="footer">
+      <div class="text-600 text-sm text-center">© 2025 Portal Cursos</div>
+    </ng-template>
+  </p-card>
+</div>

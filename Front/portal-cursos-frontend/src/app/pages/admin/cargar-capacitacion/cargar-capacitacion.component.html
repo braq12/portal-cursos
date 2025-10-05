@@ -1,0 +1,139 @@
+<div class="p-3">
+  
+    <div class="grid justify-content-center">
+      <div class="col-12 md:col-10 lg:col-8 xl:col-6">
+        <p-card header="Cargar capacitación" styleClass="shadow-2 border-round-lg">
+          <form [formGroup]="form" (ngSubmit)="enviar()" class="p-fluid">
+  
+            <!-- Fila 1: Curso / Tipo -->
+            <div class="formgrid grid">
+              <div class="field col-12 md:col-6">
+                <label for="cursoId" class="font-semibold">Curso *</label>
+                <p-dropdown
+                  id="cursoId"
+                  formControlName="cursoId"
+                  [options]="cursosOptions"
+                  placeholder="Seleccione"
+                  [filter]="true"
+                  [showClear]="true"
+                  [loading]="cargandoCursos"
+                  class="w-full"
+                ></p-dropdown>
+                <small class="p-error" *ngIf="form.get('cursoId')?.touched && form.get('cursoId')?.hasError('required')">
+                  Seleccione un curso.
+                </small>
+              </div>
+  
+              <div class="field col-12 md:col-6">
+                <label for="tipo" class="font-semibold">Tipo *</label>
+                <p-dropdown
+                  id="tipo"
+                  formControlName="tipo"
+                  [options]="tipos"
+                  placeholder="Seleccione"
+                  class="w-full"
+                ></p-dropdown>
+                <small class="p-error" *ngIf="form.get('tipo')?.touched && form.get('tipo')?.hasError('required')">
+                  El tipo es obligatorio.
+                </small>
+              </div>
+            </div>
+  
+            <!-- Título -->
+            <div class="field">
+              <label for="titulo" class="font-semibold">Título *</label>
+              <input
+                id="titulo"
+                type="text"
+                pInputText
+                formControlName="titulo"
+                placeholder="Ej. Introducción a Angular"
+                class="w-full"
+              />
+              <small class="p-error" *ngIf="form.get('titulo')?.touched && form.get('titulo')?.hasError('required')">
+                El título es obligatorio.
+              </small>
+              <small class="p-error" *ngIf="form.get('titulo')?.touched && form.get('titulo')?.hasError('minlength')">
+                Mínimo 3 caracteres.
+              </small>
+            </div>
+  
+            <!-- Descripción -->
+            <div class="field">
+              <label for="descripcion" class="font-semibold">Descripción</label>
+              <textarea
+                id="descripcion"
+                pInputTextarea
+                formControlName="descripcion"
+                rows="3"
+                maxlength="500"
+                placeholder="Resumen (máx. 500)"
+                class="w-full"
+              ></textarea>
+              <div class="flex justify-content-end mt-1 text-500 text-sm">
+                {{ (form.get('descripcion')?.value?.length || 0) }}/500
+              </div>
+            </div>
+  
+            <!-- Duración / Orden -->
+            <div class="formgrid grid">
+              <div class="field col-12 md:col-6">
+                <label for="duracion" class="font-semibold">Duración (min)</label>
+                <input
+                  id="duracion"
+                  type="number"
+                  pInputText
+                  formControlName="duracionMinutos"
+                  placeholder="Ej. 10"
+                  class="w-full"
+                />
+              </div>
+  
+              <div class="field col-12 md:col-6">
+                <label for="orden" class="font-semibold">Orden</label>
+                <input
+                  id="orden"
+                  type="number"
+                  pInputText
+                  formControlName="orden"
+                  placeholder="Ej. 1"
+                  class="w-full"
+                />
+              </div>
+            </div>
+  
+            <!-- Archivo -->
+            <div class="field">
+              <label class="font-semibold">Archivo *</label>
+              <p-fileUpload
+  #uploader
+  mode="basic"
+  name="archivo"
+  [auto]="false"
+  [customUpload]="true"
+  [multiple]="false"
+  chooseLabel="+ Seleccionar"
+  (onSelect)="onFileSelect($event)">
+</p-fileUpload>
+
+              <small class="p-error" *ngIf="archivoFaltante">El archivo es obligatorio.</small>
+            </div>
+  
+            <!-- Botón -->
+            <div class="mt-3 flex justify-content-end">
+              <button
+                pButton
+                type="submit"
+                label="Subir"
+                icon="pi pi-upload"
+                class="p-button-success w-12 md:w-auto"
+                [disabled]="form.invalid "
+              ></button>
+            </div>
+  
+          </form>
+        </p-card>
+      </div>
+    </div>
+  </div>
+  

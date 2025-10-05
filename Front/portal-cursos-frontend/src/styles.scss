@@ -1,0 +1,24 @@
+
+@import "primeflex/primeflex.css";
+@import "primeicons/primeicons.css";
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.color-primrio{
+    color: #0b3a66!important;
+}
+
+label {
+    color: #0b3a66!important;
+  }
+
+.backgroud-primario{
+    background-color: #0b3a66;;
+}
+
+.card-title-azul .p-card-title {
+    color: #0b3a66;
+    font-weight: 700; 
+  }

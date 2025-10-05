@@ -1,0 +1,81 @@
+<!-- crear-curso.component.html -->
+<div class="p-3">
+    <div class="grid justify-content-center">
+      <div class="col-12 md:col-10 lg:col-8 xl:col-6">
+  
+        <p-card header="Crear curso" styleClass="shadow-2 border-round-lg card-title-azul">
+          <form [formGroup]="form" (ngSubmit)="guardar()" class="p-fluid">
+  
+            <!-- Fila 1: Título / Categoría -->
+            <div class="formgrid grid">
+              <div class="field col-12 md:col-6">
+                <label for="titulo" class="font-semibold">Título *</label>
+                <input
+                  id="titulo"
+                  type="text"
+                  pInputText
+                  formControlName="titulo"
+                  placeholder="Ej. Introducción a Angular"
+                  class="w-full"
+                />
+                <small class="p-error" *ngIf="form.controls['titulo'].touched && form.controls['titulo'].hasError('required')">
+                  El título es obligatorio.
+                </small>
+                <small class="p-error" *ngIf="form.controls['titulo'].touched && form.controls['titulo'].hasError('minlength')">
+                  Mínimo 3 caracteres.
+                </small>
+              </div>
+  
+              <div class="field col-12 md:col-6">
+                <label for="categoria" class="font-semibold">Categoría *</label>
+                <p-dropdown
+                  id="categoria"
+                  [options]="categorias"
+                  optionLabel="label"
+                  optionValue="value"
+                  placeholder="Seleccione"
+                  formControlName="categoria"
+                  class="w-full"
+                ></p-dropdown>
+                <small class="p-error" *ngIf="form.controls['categoria'].touched && form.controls['categoria'].hasError('required')">
+                  La categoría es obligatoria.
+                </small>
+              </div>
+            </div>
+  
+            <!-- Fila 2: Descripción -->
+            <div class="field">
+              <label for="descripcion" class="font-semibold">Descripción</label>
+              <textarea
+                id="descripcion"
+                pInputTextarea
+                formControlName="descripcion"
+                rows="4"
+                maxlength="500"
+                placeholder="Resumen corto del curso (máx. 500)"
+                class="w-full"
+              ></textarea>
+              <div class="flex justify-content-end mt-1 text-500 text-sm">
+                {{ (form.get('descripcion')?.value?.length || 0) }}/500
+              </div>
+            </div>
+  
+            <!-- Botón -->
+            <div class="mt-3 flex justify-content-end">
+              <button
+                pButton
+                type="submit"
+                label="Guardar"
+                icon="pi pi-save"
+                class="p-button-success w-12 md:w-auto"
+                [disabled]="form.invalid"
+              ></button>
+            </div>
+  
+          </form>
+        </p-card>
+  
+      </div>
+    </div>
+  </div>
+  
