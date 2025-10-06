@@ -6,7 +6,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: wowbraq@gmail.com
-    password: jlfo rskt zanp qfoc
+    password:
     properties:
       mail:
         smtp:
