@@ -1,1 +1,66 @@
-<p>capacitacion-play works!</p>
+<!-- src/app/pages/usuario/capacitacion-play/capacitacion-play.component.html -->
+
+<p-confirmDialog />
+
+<p-card *ngIf="data" styleClass="shadow-2 border-round-lg">
+  <!-- Encabezado -->
+  <div class="flex flex-column gap-2">
+    <div class="flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="flex align-items-center gap-2">
+        <h2 class="m-0">{{ data.titulo }}</h2>
+        <p-tag [value]="data.tipo" [severity]="data.tipo === 'VIDEO' ? 'info' : 'help'"></p-tag>
+        <p-tag [value]="data.estado" severity="warning"></p-tag>
+      </div>
+
+      <!-- Progreso por tiempo de sesión (expiraSegundos) -->
+      <div class="flex align-items-center gap-2 w-12 md:w-6 lg:w-4">
+        <p-progressBar [value]="progressValue" class="w-full" [style]="{ height: '0.65rem' }"></p-progressBar>
+        <span class="text-600 text-sm" style="width: 3.5rem; text-align: right;">
+          {{ progressValue }}%
+        </span>
+      </div>
+    </div>
+
+    <div class="text-600 text-sm">
+      <span class="mr-3">Transcurrido: <b>{{ formatTime(elapsed) }}</b></span>
+      <span *ngIf="data?.expiraSegundos">Restante: <b>{{ formatTime(remaining) }}</b></span>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <!-- VIDEO -->
+    <video
+        *ngIf="data?.tipo === 'VIDEO'"
+        #player
+        [src]="safeUrl"
+        controls
+        playsinline
+        class="w-full border-round-lg shadow-1"
+        style="max-height: 70vh; background:#000">
+    </video>
+
+
+    <!-- PDF / Documento -->
+    <iframe
+      *ngIf="data?.tipo === 'DOCUMENTO'"
+      [src]="safeUrl"
+      class="w-full border-round-lg shadow-1"
+      style="height: 75vh; border:0;">
+    </iframe>
+  </div>
+
+  <div class="flex justify-content-end mt-3">
+    <button
+      pButton
+      label="Finalizar"
+      icon="pi pi-check"
+      class="p-button-success"
+      (click)="finalizar()"
+      [disabled]="loading">
+    </button>
+  </div>
+</p-card>
+
+<p-card *ngIf="!data && !loading" class="shadow-1">
+  Cargando capacitación…
+</p-card>

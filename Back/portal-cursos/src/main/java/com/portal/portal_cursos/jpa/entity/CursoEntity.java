@@ -29,6 +29,12 @@ public class CursoEntity {
     @Column(name = "fecha_creacion", updatable = false)
     private Instant fechaCreacion;
 
+    @Column(name = "insignia_key")
+    private String insigniaKey;
+
+    @Column(name = "insignia_url")
+    private String insigniaUrl;
+
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CapacitacionEntity> capacitaciones;
 

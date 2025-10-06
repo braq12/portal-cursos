@@ -1,51 +1,83 @@
 import { Routes } from '@angular/router';
 
-import { LoginComponent } from './pages/login/login.component';
+
 
 import { authGuard } from './core/auth/auth.guard';
 import { roleGuard } from './core/auth/role.guard';
 
-import { CursosComponent } from './pages/usuario/cursos/cursos.component';
-import { CursoDetalleComponent } from './pages/usuario/curso-detalle/curso-detalle.component';
-import { CapacitacionPlayComponent } from './pages/usuario/capacitacion-play/capacitacion-play.component';
-
-import { CursosAdminComponent } from './pages/admin/cursos-admin/cursos-admin.component';
-import { CrearCursoComponent } from './pages/admin/crear-curso/crear-curso.component';
-import { CargarCapacitacionComponent } from './pages/admin/cargar-capacitacion/cargar-capacitacion.component';
-import { ShellComponent } from './core/layout/shell/shell.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'login' },
 
   // pública
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('./pages/login/login.component').then(m => m.LoginComponent)
+  },
 
   // área protegida con layout Shell
   {
     path: '',
-    component: ShellComponent,
-    //scanMatch: [authGuard],
+    loadComponent: () =>
+      import('./core/layout/shell/shell.component').then(m => m.ShellComponent),
+    canActivate: [authGuard],
     children: [
       // USUARIO
       {
         path: '',
-       // canMatch: [roleGuard(['USUARIO'])],
+       canMatch: [roleGuard(['USUARIO'])],
         children: [
-          { path: 'cursos', component: CursosComponent },
-          { path: 'curso/:id', component: CursoDetalleComponent },
-          { path: 'capacitacion/:id', component: CapacitacionPlayComponent },
+          {
+            path: 'cursos',
+            loadComponent: () =>
+              import('./pages/usuario/cursos/cursos.component').then(m => m.CursosUsuarioComponent)
+          },
+          {
+            path: 'curso/:id',
+            loadComponent: () =>
+              import('./pages/usuario/curso-detalle/curso-detalle.component').then(m => m.CursoDetalleComponent)
+          },
+          {
+            path: 'capacitacion/:id',
+            loadComponent: () =>
+              import('./pages/usuario/capacitacion-play/capacitacion-play.component').then(m => m.CapacitacionPlayComponent)
+          },
         ]
       },
 
       // ADMIN
       {
         path: 'admin',
-       // canMatch: [roleGuard(['ADMIN'])],
+        canMatch: [roleGuard(['ADMIN'])],
         children: [
-          { path: 'cursos', component: CursosAdminComponent },
-          { path: 'crear-curso', component: CrearCursoComponent },
-          { path: 'cargar-capacitacion', component: CargarCapacitacionComponent },
-          { path: '', pathMatch: 'full', redirectTo: 'cursos' }
+
+        {
+                path: 'usuarios',
+                loadComponent: () =>
+                  import('./pages/admin/usuarios-admin/usuarios-admin.component').then(m => m.UsuariosAdminComponent)
+            },
+          {
+            path: 'reporte',
+            loadComponent: () =>
+              import('./pages/admin/reporte-cursos/reporte-cursos.component').then(m => m.ReporteCursosComponent)
+          },
+          {
+            path: 'cursos',
+            loadComponent: () =>
+              import('./pages/admin/cursos-admin/cursos-admin.component').then(m => m.CursosAdminComponent)
+          },
+          {
+            path: 'crear-curso',
+            loadComponent: () =>
+              import('./pages/admin/crear-curso/crear-curso.component').then(m => m.CrearCursoComponent)
+          },
+          {
+            path: 'cargar-capacitacion',
+            loadComponent: () =>
+              import('./pages/admin/cargar-capacitacion/cargar-capacitacion.component').then(m => m.CargarCapacitacionComponent)
+          },
+          { path: '', pathMatch: 'full', redirectTo: 'reporte' }
         ]
       }
     ]

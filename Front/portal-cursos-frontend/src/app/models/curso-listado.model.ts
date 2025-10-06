@@ -16,6 +16,8 @@ export interface CapacitacionItemDto {
     iniciado: boolean;
     estadoCurso: string;
     tieneInsignia: boolean;
+    url:string;
+    urlInsignia:string;
     capacitaciones: CapacitacionItemDto[];
   }
 

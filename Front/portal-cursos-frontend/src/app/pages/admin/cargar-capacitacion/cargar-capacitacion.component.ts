@@ -58,7 +58,6 @@ export class CargarCapacitacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.cargarCursos();
-    this.msg.add({ severity: 'error', summary: 'Error', detail: 'No se pudo subir la capacitación.' });
   }
 
   private cargarCursos() {

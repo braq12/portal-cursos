@@ -8,10 +8,7 @@ import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
 
@@ -27,12 +24,15 @@ public class S3AlmacenamientoServiceImpl implements IAlmacenamientoService {
     private final String bucket;
     private final S3Client s3;
     private final S3Presigner presigner;
+    private final String publicBaseUrl;
 
     public S3AlmacenamientoServiceImpl(
             @Value("${aws.s3.bucket}") String bucket,
-            @Value("${aws.region}") String region) {
+            @Value("${aws.region}") String region,
+            @Value("${aws.s3.public-base-url}") String publicBaseUrl) {
 
         this.bucket = bucket;
+        this.publicBaseUrl = publicBaseUrl;
 
 
         var regionObj = Region.of(region);
@@ -78,4 +78,13 @@ public class S3AlmacenamientoServiceImpl implements IAlmacenamientoService {
             return false;
         }
     }
+
+    @Override
+    public String urlPublica(String key) {
+        return publicBaseUrl.endsWith("/")
+                ? publicBaseUrl + key
+                : publicBaseUrl + "/" + key;
+    }
+
+
 }

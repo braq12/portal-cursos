@@ -1,12 +1,12 @@
 package com.portal.portal_cursos.controller;
 
 import com.portal.portal_cursos.configuracion.InformacionDeUsuario;
-import com.portal.portal_cursos.dtos.CapacitacionResponse;
-import com.portal.portal_cursos.dtos.CrearCapacitacionUploadRequest;
-import com.portal.portal_cursos.dtos.FinalizarResponse;
-import com.portal.portal_cursos.dtos.IniciarCapacitacionResponse;
+import com.portal.portal_cursos.dtos.capacitacion.CapacitacionResponse;
+import com.portal.portal_cursos.dtos.capacitacion.CrearCapacitacionUploadRequest;
+import com.portal.portal_cursos.dtos.capacitacion.FinalizarResponse;
+import com.portal.portal_cursos.dtos.capacitacion.IniciarCapacitacionResponse;
 import com.portal.portal_cursos.service.ICapacitacionPlayService;
-import com.portal.portal_cursos.service.ICapacitacionProgresoService;
+import com.portal.portal_cursos.service.ICapacitacionFinalizarService;
 import com.portal.portal_cursos.service.ICapacitacionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class CapacitacionController {
     private final ICapacitacionPlayService capacitacionPlayService;
     private final InformacionDeUsuario infoUsuario;
 
-    private final ICapacitacionProgresoService capacitacionProgresoService;
+    private final ICapacitacionFinalizarService capacitacionProgresoService;
 
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<CapacitacionResponse> crearCapacitacionUpload(

@@ -2,6 +2,18 @@ server:
   port: ${SERVER_PORT:5000}
 
 spring:
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wowbraq@gmail.com
+    password: ${SPRING_MAIL_password}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: ${SPRING_MULTIPART_MAX_FILE_SIZE:512MB}
@@ -21,7 +33,7 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET}
-  expirationMinutes: 120
+  expirationMinutes: ${JWT_EXPIRATIONMINUTES:120}
 
 management:
   endpoints:
@@ -36,4 +48,7 @@ aws:
   region: ${AWS_REGION}
   s3:
     bucket: ${BUCKET}
+    public-base-url: ${AWS_S3_PUBLIC_BASE_URL}
+
+CORS_ALLOWED_ORIGINS: {$CORS_ALLOWED_ORIGINS}
 

@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiBaseUrl: 'https://portal-cursos-env.eba-xxxx.us-east-2.elasticbeanstalk.com'
+    apiBaseUrl: 'http://portal-cursos-env.eba-spvg6uja.us-east-2.elasticbeanstalk.com'
   };

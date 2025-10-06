@@ -50,7 +50,7 @@ export class LoginComponent {
           this.auth.saveToken(r.token);
           const rol = this.auth.role();
           this.msg.add({ severity: 'success', summary: 'Bienvenido' });
-          this.router.navigate([ rol === 'ADMIN' ? '/admin/cursos' : '/cursos' ]);
+          this.router.navigate([ rol === 'ADMIN' ? '/admin/reporte' : '/cursos' ]);
         },
         error: (err) => {
           const detalle = err?.error?.detalle || err?.error?.mensaje || 'Credenciales inválidas';

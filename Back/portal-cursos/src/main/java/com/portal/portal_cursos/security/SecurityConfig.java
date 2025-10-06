@@ -3,6 +3,7 @@ package com.portal.portal_cursos.security;
 import java.util.List;
 
 import com.portal.portal_cursos.configuracion.InformacionDeUsuario;
+import com.portal.portal_cursos.enums.RolesEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -30,9 +31,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health", "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/cursos/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/cursos/**").hasAuthority("ADMIN")
-                        .requestMatchers("/progreso/**", "/insignias/**", "/me/**").authenticated()
+                        .requestMatchers("/usuarios").hasAuthority(RolesEnum.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(
@@ -45,9 +44,9 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource(
-            @Value("${CORS_ALLOWED_ORIGINS:*}") String allowedOrigins) {
+            @Value("${CORS_ALLOWED_ORIGINS:http://localhost:4200}") String allowedOrigins) {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:4200"));
+        cfg.setAllowedOrigins(List.of(allowedOrigins));
         cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

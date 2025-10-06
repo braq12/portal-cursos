@@ -1,1 +1,40 @@
-<p>shell works!</p>
+<p-toast position="top-right" [baseZIndex]="3000"></p-toast>
+
+<!-- Top bar -->
+<div class="surface-section shadow-1">
+  <div class="flex align-items-center justify-content-between px-3 py-2">
+    <div class="flex align-items-center gap-2">
+      <!-- Hamburguesa en móviles -->
+      <button
+        pButton
+        class="p-button-text md:hidden"
+        icon="pi pi-bars"
+        (click)="mobileOpen = true">
+      </button>
+
+      <span class="text-xl font-semibold">Portal Cursos</span>
+    </div>
+
+    <!-- Menú Desktop -->
+    <p-menubar
+      class="hidden md:flex flex-auto md:mx-4"
+      [model]="menu">
+    </p-menubar>
+
+    <button pButton label="Salir" class="p-button-text" (click)="logout()"></button>
+  </div>
+</div>
+
+<!-- Menú Mobile -->
+<p-sidebar [(visible)]="mobileOpen" position="left" styleClass="w-18rem">
+  <div class="flex align-items-center justify-content-between mb-3">
+    <span class="text-xl font-semibold">Portal Cursos</span>
+    <button pButton class="p-button-text" icon="pi pi-times" (click)="mobileOpen=false"></button>
+  </div>
+
+  <p-menu [model]="menu" [style]="{width:'100%'}"></p-menu>
+
+  <button pButton label="Salir" class="p-button-text mt-3 w-full" (click)="logout()"></button>
+</p-sidebar>
+
+<router-outlet />

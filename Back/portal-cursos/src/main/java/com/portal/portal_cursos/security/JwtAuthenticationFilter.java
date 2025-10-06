@@ -33,7 +33,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
-            log.info("Validar headers");
             String auth = request.getHeader("Authorization");
             if (StringUtils.hasText(auth) && auth.startsWith("Bearer ")) {
                 String token = auth.substring(7);

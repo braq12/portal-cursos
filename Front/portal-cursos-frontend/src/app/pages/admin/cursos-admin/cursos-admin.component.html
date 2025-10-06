@@ -1,1 +1,112 @@
-<p>cursos-admin works!</p>
+<div class="p-3">
+<p-table
+  #dt
+  [value]="cursos"
+  dataKey="id"
+  [loading]="loading"
+  [expandedRowKeys]="expandedRows"
+  [paginator]="true"
+  [rows]="10"
+  sortField="titulo"
+  [rowsPerPageOptions]="[5,10,20]"
+  styleClass="p-datatable-striped border-round-lg shadow-2"
+  [tableStyle]="{ 'min-width': '60rem' }">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between align-items-center">
+      <h3 class="m-0 color-primrio">📚 Cursos</h3>
+      <button pButton icon="pi pi-refresh" label="Actualizar" (click)="cargar()" class="p-button-text"></button>
+    </div>
+  </ng-template>
+  <!-- Encabezado -->
+  <ng-template pTemplate="header">
+    <tr >
+      <th style="width:5rem "></th>
+      <th>Título</th>
+      <th>Categoría</th>
+      <th>Descripción</th>
+      <th># Capacitaciones</th>
+      <th>Insignia</th>
+    </tr>
+  </ng-template>
+
+  <!-- Filas -->
+  <ng-template #body let-curso let-expanded="expanded">
+    <tr>
+      <td>
+        <p-button type="button"
+                  [pRowToggler]="curso"
+                  [text]="true" [rounded]="true" [plain]="true"
+                  [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'">
+        </p-button>
+      </td>
+      <td><strong>{{ curso.titulo }}</strong></td>
+      <td>{{ curso.categoria }}</td>
+      <td>{{ curso.descripcion }}</td>
+      <td>{{ curso.cantidadCapacitaciones }}</td>
+      <td><a pButton
+        [href]="curso.urlInsignia"
+        target="_blank"
+        rel="noopener noreferrer"
+        link="true"
+        [label]="'Ver recurso'"
+        icon="pi pi-external-link"
+        iconPos="right">
+     </a></td>
+    </tr>
+  </ng-template>
+
+  <!-- Contenido expandido -->
+  <ng-template #expandedrow let-curso>
+    <tr>
+      <td colspan="6">
+        <div class="p-3">
+          <h5 class="m-0 mb-3">Capacitaciones de "{{ curso.titulo }}"</h5>
+
+          <p-table [value]="curso.capacitaciones"
+                   dataKey="id"
+                   styleClass="p-datatable-sm p-datatable-gridlines border-round-md">
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Tipo</th>
+                <th>Url</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-cap>
+              <tr>
+                <td>{{ cap.titulo }}</td>
+                <td>{{ cap.descripcion }}</td>
+                <td><p-tag [value]="cap.tipo" severity="info"></p-tag></td>
+                <td><a pButton
+                    [href]="cap.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    link="true"
+                    [label]="cap.titulo || 'Ver recurso'"
+                    icon="pi pi-external-link"
+                    iconPos="right">
+                 </a></td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="5" class="text-center">Sin capacitaciones.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr><td colspan="6" class="text-center">No hay cursos disponibles.</td></tr>
+  </ng-template>
+</p-table>
+
+</div>

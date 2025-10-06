@@ -20,7 +20,13 @@ public class UsuarioEntity {
     private String correo;
     private String claveHash;
     private String rol;
+    private String nombre;
 
     @Column(name = "fecha_creacion", updatable = false)
-    private Instant fechaCreacion = Instant.now();
+    private Instant fechaCreacion;
+
+    @PrePersist
+    void prePersist() {
+        if (fechaCreacion == null) fechaCreacion = Instant.now();
+    }
 }

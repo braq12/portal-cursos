@@ -1,7 +1,7 @@
 package com.portal.portal_cursos.service;
 
-import com.portal.portal_cursos.dtos.CursoListadoItemDto;
-import com.portal.portal_cursos.dtos.ListarCursosResponse;
+import com.portal.portal_cursos.dtos.curso.CursoListadoItemDto;
+import com.portal.portal_cursos.dtos.curso.ListarCursosResponse;
 
 import java.util.List;
 

@@ -1,44 +1,70 @@
-import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet, RouterLink, Router } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
+
 import { ToastModule } from 'primeng/toast';
+import { MenubarModule } from 'primeng/menubar';
+import { MenuModule } from 'primeng/menu';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-shell',
   standalone: true,
-  imports: [CommonModule, RouterModule, RouterOutlet, RouterLink, MatToolbarModule, MatButtonModule, ToastModule],
-  providers: [MessageService],               
-  template: `
-    <p-toast position="top-right" [baseZIndex]="3000"></p-toast>
-
-    <mat-toolbar color="primary">
-      <span>Portal Cursos</span>
-      <span class="spacer"></span>
-
-      <ng-container *ngIf="role() === 'USUARIO'">
-        <a mat-button routerLink="/cursos">Mis cursos</a>
-      </ng-container>
-
-      <ng-container *ngIf="role() === 'ADMIN'">
-        <a mat-button routerLink="/admin/cursos">Cursos</a>
-        <a mat-button routerLink="/admin/crear-curso">Crear curso</a>
-        <a mat-button routerLink="/admin/cargar-capacitacion">Cargar capacitación</a>
-      </ng-container>
-
-      <button mat-button (click)="logout()">Salir</button>
-    </mat-toolbar>
-
-    <router-outlet />
-  `,
-  styles: [`.spacer { flex: 1 }`]
+  imports: [
+    CommonModule,
+    RouterModule,
+    ToastModule,
+    MenubarModule,
+    MenuModule,
+    SidebarModule,
+    ButtonModule
+  ],
+  providers: [MessageService],
+  templateUrl: './shell.component.html'
 })
-export class ShellComponent {
-  constructor(private auth: AuthService,private router: Router) {}
-  role() { return this.auth.role(); }
+export class ShellComponent implements OnInit {
+  mobileOpen = false;
+
+  // PrimeNG MenuModel
+  menu: any[] = [];
+
+  constructor(private auth: AuthService, private router: Router) {}
+
+  ngOnInit(): void {
+    this.buildMenu();
+  }
+
+  private buildMenu() {
+    const role = this.auth.role();
+
+    if (role === 'ADMIN') {
+      this.menu = [
+        { label: 'Reportes', icon: 'pi pi-chart-bar', routerLink: ['/admin/reporte'] },
+        { label: 'Usuarios', icon: 'pi pi-users', routerLink: ['/admin/usuarios'] },
+        {
+          label: 'Cursos',
+          icon: 'pi pi-book',
+          items: [
+            { label: 'Listado', icon: 'pi pi-list', routerLink: ['/admin/cursos'] },
+            { label: 'Crear curso', icon: 'pi pi-plus', routerLink: ['/admin/crear-curso'] },
+            { label: 'Cargar capacitación', icon: 'pi pi-upload', routerLink: ['/admin/cargar-capacitacion'] },
+          ],
+        },
+      ];
+    } else if (role === 'USUARIO') {
+      this.menu = [
+        { label: 'Mis cursos', icon: 'pi pi-briefcase', routerLink: ['/cursos'] },
+      ];
+    } else {
+      // fallback por si no hay rol
+      this.menu = [];
+    }
+  }
+
   logout() {
     this.auth.logout();
     this.router.navigate(['/login']);

@@ -2,6 +2,17 @@ server:
   port: 8085
 
 spring:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: wowbraq@gmail.com
+    password: jlfo rskt zanp qfoc
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
   servlet:
     multipart:
       max-file-size: 512MB
@@ -20,7 +31,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
 jwt:
-  secret: DEV_CAMBIA_ESTA_LLAVE_LARGA_12345678901234567890
+  secret: DEV_LLAVE_LARGA_LLAVE_LARGA_12345678901234567890
   expirationMinutes: 120
 
 management:
@@ -36,3 +47,6 @@ aws:
   region: us-east-2
   s3:
     bucket: portal-cursos-bucket
+    public-base-url: https://portal-cursos-bucket.s3.us-east-2.amazonaws.com
+
+CORS_ALLOWED_ORIGINS: "http://localhost:4200"

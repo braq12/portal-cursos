@@ -1,5 +1,8 @@
 package com.portal.portal_cursos.configuracion;
 
+import lombok.Getter;
+
+@Getter
 public class NegocioException extends RuntimeException {
     private final String codigo;
 
@@ -7,6 +10,5 @@ public class NegocioException extends RuntimeException {
         super(mensaje);
         this.codigo = codigo;
     }
-    public String getCodigo() { return codigo; }
 }
 

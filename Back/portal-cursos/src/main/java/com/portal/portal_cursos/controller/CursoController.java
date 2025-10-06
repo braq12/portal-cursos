@@ -1,7 +1,7 @@
 package com.portal.portal_cursos.controller;
 
 import com.portal.portal_cursos.configuracion.InformacionDeUsuario;
-import com.portal.portal_cursos.dtos.*;
+import com.portal.portal_cursos.dtos.curso.*;
 import com.portal.portal_cursos.service.ICursoProgresoService;
 import com.portal.portal_cursos.service.ICursoQueryService;
 import com.portal.portal_cursos.service.ICursoService;
@@ -10,11 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @RestController
-@RequestMapping(path="/cursos",produces= MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/cursos", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class CursoController {
 
@@ -24,13 +25,12 @@ public class CursoController {
     private final ICursoProgresoService cursoProgresoService;
 
 
-    @PostMapping
-    public ResponseEntity<CursoResponse> crearCurso(@RequestBody @Valid CrearCursoRequest request) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<CursoResponse> crearCurso(@ModelAttribute @Valid CrearCursoRequest request) {
         Long usuarioId = infoUsuario.getUsuarioId();
         CursoResponse resp = cursoService.crearCurso(usuarioId, request);
         return ResponseEntity.ok(resp);
     }
-
 
 
     @GetMapping("/disponibles")
@@ -48,8 +48,7 @@ public class CursoController {
 
 
     @PostMapping("/{cursoId}/iniciar")
-    public ResponseEntity<IniciarCursoResponse> iniciarCurso(
-            @PathVariable Long cursoId) {
+    public ResponseEntity<IniciarCursoResponse> iniciarCurso(@PathVariable Long cursoId) {
 
         Long usuarioId = infoUsuario.getUsuarioId();
         var resp = cursoProgresoService.iniciarCursoYListarCapacitaciones(usuarioId, cursoId);

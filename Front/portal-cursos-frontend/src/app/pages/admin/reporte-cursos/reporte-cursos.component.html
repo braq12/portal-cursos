@@ -1,0 +1,92 @@
+
+
+<div class="p-3">
+  <div class="grid">
+    <!-- Header / Toolbar -->
+    <div class="col-12">
+      <p-toolbar>
+        <div class="p-toolbar-group-start">
+          <h2 class="m-0">Reporte de cursos por usuario</h2>
+        </div>
+        <div class="p-toolbar-group-end">
+          <button pButton icon="pi pi-refresh" label="Recargar" class="p-button-text" (click)="recargar()"></button>
+        </div>
+      </p-toolbar>
+    </div>
+
+    <!-- Gráfico -->
+    <div class="col-12 lg:col-6">
+      <p-card header="Resumen (Completados / En progreso / Pendientes)" styleClass="h-full">
+        <div style="height: 360px;">
+          <ng-container *ngIf="!loading(); else loadingChart">
+            <p-chart type="bar" [data]="chartData" [options]="chartOptions"></p-chart>
+          </ng-container>
+          <ng-template #loadingChart>
+            <div class="flex align-items-center justify-content-center" style="height: 360px;">
+              <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+            </div>
+          </ng-template>
+        </div>
+      </p-card>
+    </div>
+
+    <!-- Tabla detalle -->
+    <div class="col-12 lg:col-6">
+      <p-card header="Detalle por usuario y curso" styleClass="h-full">
+        <ng-container *ngIf="!loadingDetalle(); else loadingTbl">
+          <p-table
+            [value]="getDetalleOrdenado()"
+            dataKey="cursoId"
+            [paginator]="true"
+            [rows]="8"
+            [rowGroupMode]="'subheader'"
+            groupRowsBy="usuario"
+            sortField="usuario"
+            [sortOrder]="1"
+            responsiveLayout="scroll"
+          >
+            <ng-template pTemplate="rowgroupheader" let-usuario>
+              <tr>
+                <td colspan="3" class="py-3">
+                  <strong>{{ usuario }}</strong>
+                </td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width:50%">Usuario</th>
+                <th style="width:50%">Curso</th>
+                <th style="width:25%">Estado</th>
+                <th style="width:25%">Curso ID</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row>
+              <tr>
+                <td>{{ row.usuario }}</td>
+                <td>{{ row.curso }}</td>
+                <td>
+                  <p-tag [value]="row.estado" [severity]="getSeverity(row.estado)"></p-tag>
+                </td>
+                <td>#{{ row.cursoId }}</td>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="3" class="text-center">Sin datos para mostrar.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </ng-container>
+
+        <ng-template #loadingTbl>
+          <div class="flex align-items-center justify-content-center" style="height: 240px;">
+            <p-progressSpinner strokeWidth="4"></p-progressSpinner>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>

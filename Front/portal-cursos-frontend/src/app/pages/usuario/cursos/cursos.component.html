@@ -1,1 +1,145 @@
-<p>cursos works!</p>
+
+<div class="p-3">
+<p-table
+  [value]="cursos"
+  [loading]="loading"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="10"
+  styleClass="p-datatable-striped border-round-lg shadow-2">
+
+  <ng-template pTemplate="caption">
+    <div class="flex justify-content-between align-items-center w-full">
+      <h3 class="m-0">Mis cursos</h3>
+      <button pButton type="button" icon="pi pi-refresh" label="Actualizar" (click)="cargarCursos()"></button>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Título</th>
+      <th>Categoría</th>
+      <th>Descripción</th>
+      <th class="text-center">Capacitaciones</th>
+      <th>Estado</th>
+      <th style="width: 18rem">Acciones</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-curso>
+    <tr>
+      <td><strong>{{ curso.titulo }}</strong></td>
+      <td>{{ curso.categoria }}</td>
+      <td class="text-600">{{ curso.descripcion }}</td>
+      <td class="text-center">{{ curso.cantidadCapacitaciones }}</td>
+      <td>
+        <p-tag [value]="curso.estadoCurso" [severity]="getEstadoSeverity(curso.estadoCurso)"></p-tag>
+      </td>      
+      <td class="acciones-col text-center">
+        <div class="flex justify-content-center gap-2">
+          <p-button
+            label="Ver capacitaciones"
+            icon="pi pi-list"
+            severity="secondary"
+            size="small"
+            [text]="true"
+            (click)="abrirCapacitaciones(curso)"
+          ></p-button>
+          <p-button
+          *ngIf="curso.estadoCurso !== 'COMPLETADO'"
+            [label]="curso.iniciado ? 'Seguir' : 'Iniciar'"
+            [icon]="curso.iniciado ? 'pi pi-play' : 'pi pi-arrow-right'"
+            severity="success"
+            size="small"
+            (click)="iniciarOContinuar(curso)"
+          ></p-button>
+          <p-button
+            *ngIf="curso.estadoCurso === 'COMPLETADO' && curso.tieneInsignia && curso.urlInsignia"
+            label="Ver insignia"
+            icon="pi pi-verified"
+            severity="info"
+            size="small"
+            [text]="true"
+            (click)="verInsignia(curso)"
+          ></p-button>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6" class="text-center">No hay cursos disponibles.</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<!-- Modal de Capacitaciones -->
+<p-dialog
+  [(visible)]="verCapsVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width:'95vw', maxWidth:'800px'}"
+  header="{{ cursoSeleccionado?.titulo || 'Capacitaciones' }}">
+
+  <div class="grid">
+    <div class="col-12" *ngIf="caps?.length === 0">
+      <div class="text-center text-600 p-3">Este curso aún no tiene capacitaciones.</div>
+    </div>
+
+    <div class="col-12" *ngFor="let cap of caps">
+      <div class="flex flex-column md:flex-row gap-3 p-3 border-1 surface-border border-round">
+        <div class="flex-1">
+          <div class="flex align-items-center gap-2 mb-2">
+            <p-tag [value]="cap.tipo" severity="info"></p-tag>
+            <strong>{{ cap.titulo }}</strong>
+          </div>
+          <div class="text-600">{{ cap.descripcion }}</div>
+        </div>
+        <div class="flex flex-column gap-2 md:align-items-end">
+          <p-tag [value]="cap.estado" [severity]="getEstadoSeverity(cap.estado)"></p-tag>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cerrar" icon="pi pi-times" [outlined]="true" (click)="verCapsVisible=false"></button>
+  </ng-template>
+</p-dialog>
+
+
+<p-dialog
+  [(visible)]="verInsigniaVisible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [style]="{width:'90vw', maxWidth:'520px'}"
+  header="Insignia del curso">
+
+  <div class="flex flex-column align-items-center gap-3 p-3">
+    <p-image
+      *ngIf="insigniaUrl"
+      [src]="insigniaUrl"
+      alt="Insignia"
+      [preview]="true"
+      [style]="{maxWidth:'100%'}"
+      [imageStyle]="{'max-height': '320px', 'object-fit': 'contain'}"
+    ></p-image>
+
+    <a *ngIf="insigniaUrl"
+       [href]="insigniaUrl"
+       target="_blank"
+       download
+       class="p-button p-button-sm p-button-outlined">
+       <i class="pi pi-download mr-2"></i> Descargar
+    </a>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button pButton type="button" label="Cerrar" icon="pi pi-times" [outlined]="true" (click)="verInsigniaVisible=false"></button>
+  </ng-template>
+</p-dialog>
+
+</div>

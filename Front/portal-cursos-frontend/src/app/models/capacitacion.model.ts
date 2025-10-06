@@ -18,7 +18,7 @@ export interface CapacitacionResponse {
     tipo: string;
     duracionMinutos?: number;
     orden?: number;
-    archivo: File; // MultipartFile en backend
+    archivo: File;
   }
   
   /** Convierte el request a FormData para enviar como multipart/form-data */
@@ -33,4 +33,23 @@ export interface CapacitacionResponse {
     fd.append('archivo', req.archivo);
     return fd;
   }
+
+  export interface IniciarCapacitacionResponse {
+    cursoId: number;
+    capacitacionId: number;
+    titulo: string;
+    tipo: string;
+    estado: string;
+    url: string;
+    expiraSegundos: number;
+  }
+
+  export interface FinalizarResponse {
+    cursoId: number;
+    capacitacionId: number;
+    cursoCompletado: boolean;
+    insigniaEmitida: boolean;
+  }
+  
+
   

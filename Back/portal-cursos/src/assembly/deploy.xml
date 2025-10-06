@@ -1,0 +1,38 @@
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.3 https://maven.apache.org/xsd/assembly-1.1.3.xsd">
+    <id>bundle</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+
+    <baseDirectory>/</baseDirectory>
+
+    <!-- 1) Incluye .platform completa -->
+    <fileSets>
+        <fileSet>
+            <directory>${project.basedir}/.platform</directory>
+            <outputDirectory>.platform</outputDirectory>
+            <includes>
+                <include>**/*</include>
+            </includes>
+            <useDefaultExcludes>false</useDefaultExcludes>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+    </fileSets>
+
+    <!-- 2) Agrega el artefacto principal (tu WAR) en la raíz del ZIP -->
+    <dependencySets>
+        <dependencySet>
+            <!-- Incluir el propio artefacto del proyecto -->
+            <useProjectArtifact>true</useProjectArtifact>
+            <outputDirectory>/</outputDirectory>
+            <unpack>false</unpack>
+            <includes>
+                <!-- Este include “apunta” al artefacto actual -->
+                <include>${project.groupId}:${project.artifactId}</include>
+            </includes>
+        </dependencySet>
+    </dependencySets>
+</assembly>

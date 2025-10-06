@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 const LOGIN_URL = `${environment.apiBaseUrl}/auth/login`;
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
-  // no metas Authorization en el login
   if (req.url.includes('/auth/login')) return next(req);
   if (req.url.startsWith(LOGIN_URL))   return next(req);
 

@@ -1,6 +1,6 @@
 package com.portal.portal_cursos.service;
 
-import com.portal.portal_cursos.dtos.IniciarCursoResponse;
+import com.portal.portal_cursos.dtos.curso.IniciarCursoResponse;
 
 public interface ICursoProgresoService {
 

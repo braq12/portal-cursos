@@ -1,6 +1,6 @@
 package com.portal.portal_cursos.service;
 
-import com.portal.portal_cursos.dtos.IniciarCapacitacionResponse;
+import com.portal.portal_cursos.dtos.capacitacion.IniciarCapacitacionResponse;
 
 public interface ICapacitacionPlayService {
 
